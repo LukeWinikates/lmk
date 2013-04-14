@@ -1,3 +1,5 @@
+require 'yaml'
+
 module LMK
   class Config
     def initialize(file_path = "#{ENV['HOME']}/.lmkrc")
@@ -26,7 +28,7 @@ module LMK
 
     private
     def yml
-      @yml ||= YAML.load_file(@file_path)
+      @yml ||= ::YAML.load_file(@file_path)
     end
   end
 end

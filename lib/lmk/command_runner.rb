@@ -2,6 +2,8 @@ require 'popen4'
 
 module LMK
   class CommandRunner
+    attr_reader :command
+
     def initialize(command)
       @command = command
       @status = ::POpen4.popen4(command) do |stdout, stderr, stdin, pid| 

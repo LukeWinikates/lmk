@@ -10,15 +10,15 @@ module LMK
     method_options :t => :boolean
     def exec(*command_tokens)
       command = command_tokens.join ' '
-      if(options.t?) 
-        puts "running command `#{command}`"
-        puts CommandRunner.new(command).result
-      end
+      puts "running command `#{command}`"
+      result = CommandRunner.new(command)
+      puts result.result
+      TwilioSender.new.send_sms CommandResultFormatter.format(result) unless options.t?
     end
 
     desc "config", "read the current config file"
     def config
-      ::LMK::Config.new.raw
+      Config.new.raw
     end
   end
 end

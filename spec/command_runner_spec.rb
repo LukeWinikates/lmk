@@ -7,6 +7,7 @@ describe LMK::CommandRunner do
 
     its(:result)  { should == "hamburglar\n" }
     its(:status)  { should == 0 }
+    its(:command) { should == command }
   end
 
   context "for shell commands that fail" do
@@ -14,5 +15,6 @@ describe LMK::CommandRunner do
 
     its(:result)  { should =~ /No such file or directory/ }
     its(:status)  { should == 1 }
+    its(:command) { should == command }
   end
 end
