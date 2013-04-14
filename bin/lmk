@@ -1,21 +1,26 @@
 #!/usr/bin/env ruby
-require 'thor'
+lib = File.expand_path(File.dirname(__FILE__) + '/../lib')
+$LOAD_PATH.unshift(lib) if File.directory?(lib) && !$LOAD_PATH.include?(lib)
 require 'lmk'
+require 'thor'
 
-class LetMeKnow < Thor
-
-  desc "exec COMMAND", "run a command and get an SMS with its result"
-  method_options :t => :boolean
-  def exec(*command)
-    if(options.t?) 
-      puts "running command `#{command.join ' '}`"
+module LMK
+  class LetMeKnow < Thor
+    desc "exec COMMAND", "run a command and get an SMS with its result"
+    method_options :t => :boolean
+    def exec(*command_tokens)
+      command = command_tokens.join ' '
+      if(options.t?) 
+        puts "running command `#{command}`"
+        puts CommandRunner.new(command).result
+      end
     end
-  end
 
-  desc "config", "read the current config file"
-  def config
-    ::LMK::Config.new.raw
+    desc "config", "read the current config file"
+    def config
+      ::LMK::Config.new.raw
+    end
   end
 end
 
-LetMeKnow.start
+LMK::LetMeKnow.start
