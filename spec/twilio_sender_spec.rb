@@ -4,6 +4,6 @@ require 'spec_helper'
 # you will recieve a text message each time you run this test, so run it sparingly.
 describe LMK::TwilioSender, :integration do
   it "sends a message using the twilio api" do
-    subject.send_sms "test message"
+    subject.send "test message"
   end
 end

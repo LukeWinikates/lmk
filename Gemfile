@@ -1,5 +1,10 @@
+source :rubygems
+
 gem 'thor'
 gem 'twilio-ruby'
 gem 'popen4'
+gem 'octokit'
 
-gem 'rspec'
+group :development do
+  gem 'rspec'
+end

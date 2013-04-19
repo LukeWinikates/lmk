@@ -4,23 +4,4 @@ $LOAD_PATH.unshift(lib) if File.directory?(lib) && !$LOAD_PATH.include?(lib)
 require 'lmk'
 require 'thor'
 
-module LMK
-  class LetMeKnow < Thor
-    desc "exec COMMAND", "run a command and get an SMS with its result"
-    method_options :t => :boolean
-    def exec(*command_tokens)
-      command = command_tokens.join ' '
-      puts "running command `#{command}`"
-      result = CommandRunner.new(command)
-      puts result.result
-      TwilioSender.new.send_sms CommandResultFormatter.format(result) unless options.t?
-    end
-
-    desc "config", "read the current config file"
-    def config
-      Config.new.raw
-    end
-  end
-end
-
-LMK::LetMeKnow.start
+LMK::CLI.start

@@ -1,8 +1,9 @@
 require 'popen4'
 
 module LMK
-  class CommandRunner
+  class ShellCommand
     attr_reader :command
+    attr_accessor :html_url
 
     def initialize(command)
       @command = command
@@ -10,6 +11,10 @@ module LMK
         @error = stderr.read 
         @output = stdout.read
       end
+    end
+
+    def self.exec(command)
+      new(command)
     end
 
     def success?
@@ -20,7 +25,7 @@ module LMK
       @status.exitstatus
     end
 
-    def result
+    def output
       if success?
         @output
       else
