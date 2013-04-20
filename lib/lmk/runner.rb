@@ -35,11 +35,19 @@ module LMK
       @configuration.shell_service.exec(command)
     end
 
+    def sms(command)
+      @configuration.sms_service.send(command)
+    end
+
+    def post_to_web(command)
+      @configuration.gist_service.send(command)
+    end
+
     def run(command, options)
       console("running command `#{command}`")
       result = shell(command)
-      #puts result.result
-      #TwilioSender.new.send_sms CommandResultFormatter.format(result) unless options.t?
+      result = post_to_web(result)
+      result = sms(result)
       console(result.output)
     end
   end

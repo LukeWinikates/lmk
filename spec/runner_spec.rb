@@ -35,9 +35,9 @@ describe LMK::Runner do
   end
 
   describe "#run" do
-    let(:command) { "some command" }
+    let(:command_text) { "some command" }
     let(:options) { {} }
-    let(:exec_result) { ::Struct.new(:output).new("hello!")  }
+    let(:fake_command) { ::Struct.new(:output).new("hello!")  }
 
     subject do
       config = LMK::Runner::Configuration.new
@@ -46,18 +46,20 @@ describe LMK::Runner do
       config.console_service = console_service
       config.shell_service = shell_service
 
-      LMK::Runner.new(config).tap { |r| r.run(command, options) }
+      LMK::Runner.new(config).tap { |r| r.run(command_text, options) }
     end
 
     before do
-      shell_service.stub(:exec).with(command) { exec_result  } 
+      shell_service.stub(:exec).with(command_text) { fake_command  } 
     end
 
     describe "printing to the console" do
       it "prints 'running command `command text` to the console" do
-        console_service.should_receive(:puts).with("running command `#{command}`").ordered
-        shell_service.should_receive(:exec).with(command).ordered
-        console_service.should_receive(:puts).with(exec_result.output).ordered
+        console_service.should_receive(:puts).with("running command `#{command_text}`").ordered
+        shell_service.should_receive(:exec).with(command_text).ordered
+        gist_service.should_receive(:send).with(fake_command).ordered.and_return(fake_command)
+        sms_service.should_receive(:send).with(fake_command).ordered.and_return(fake_command)
+        console_service.should_receive(:puts).with(fake_command.output).ordered
         subject
       end
     end

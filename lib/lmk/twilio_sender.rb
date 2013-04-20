@@ -7,8 +7,8 @@ module LMK
       @client = ::Twilio::REST::Client.new(@config.account_sid, @config.auth_token)
     end
 
-    def send(message)
-      @client.account.sms.messages.create options.merge(:body => message)
+    def send(command)
+      @client.account.sms.messages.create options.merge(:body => command.output)
     end
 
     def self.send(message)
