@@ -10,6 +10,10 @@ module LMK
     def initialize(attributes) 
       attributes.each { |k, v| send("#{k}=".to_sym, v) }
     end
+
+    def valid? 
+      auth_token && from && phone_number && account_sid
+    end
     
     attr_accessor :auth_token, :from, :phone_number, :account_sid
   end
