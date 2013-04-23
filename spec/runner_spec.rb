@@ -53,7 +53,7 @@ describe LMK::Runner do
       shell_service.stub(:exec).with(command_text) { fake_command  } 
     end
 
-    describe "printing to the console" do
+    describe "delegating to services" do
       it "prints 'running command `command text` to the console" do
         console_service.should_receive(:puts).with("running command `#{command_text}`").ordered
         shell_service.should_receive(:exec).with(command_text).ordered
