@@ -1,7 +1,6 @@
 require 'lmk/config'
 require 'lmk/twilio_sender'
 require 'lmk/shell_command'
-require 'lmk/command_result_formatter'
 require 'lmk/runner'
 require 'lmk/gist_sender'
 require 'lmk/cli'

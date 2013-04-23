@@ -3,7 +3,7 @@ require 'twilio-ruby'
 module LMK
   class TwilioSender
     def initialize
-      @config = Config.new
+      @config = Config.from_file
       @client = ::Twilio::REST::Client.new(@config.account_sid, @config.auth_token)
     end
 
