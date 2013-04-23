@@ -7,7 +7,7 @@ module LMK
     end
 
     def self.send(current_result)
-      new(current_result).tap(&:send)
+      new(current_result).send
     end
 
     def send
@@ -22,7 +22,7 @@ module LMK
         :public => false, 
         :files => {
           "output.txt" => { 
-            :content => @command.result 
+            :content => @command.output 
           }
         }
       }

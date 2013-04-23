@@ -17,4 +17,15 @@ describe LMK::ShellCommand do
     its(:status)  { should == 1 }
     its(:command) { should == command }
   end
+
+  context "when the command has an html_url" do
+    let(:html_url) { "http://www.example.com" }
+    subject do
+      LMK::ShellCommand.new('echo "Hamburglar"').tap do |c|
+        c.html_url= html_url
+      end
+    end
+    
+    its(:output) { should include(html_url) }
+  end
 end

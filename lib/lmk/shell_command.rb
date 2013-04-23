@@ -26,6 +26,11 @@ module LMK
     end
 
     def output
+      output << "html url: #{html_url}\n" if html_url 
+      output << result
+    end
+
+    def result
       if success?
         @output
       else

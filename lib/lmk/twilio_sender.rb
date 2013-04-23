@@ -9,6 +9,7 @@ module LMK
 
     def send(command)
       @client.account.sms.messages.create options.merge(:body => command.output)
+      command
     end
 
     def self.send(message)
@@ -19,7 +20,7 @@ module LMK
     def options
       {
         :from => @config.from, 
-        :to => @config.phone_number, 
+        :to => @config.phone_number 
       }
     end
   end

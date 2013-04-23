@@ -3,8 +3,6 @@ require 'thor'
 module LMK
   class CLI < ::Thor
     desc "exec COMMAND", "run a command and get an SMS with its result"
-    method_options :t => :boolean
-    method_options :g => :boolean
     def exec(*command)
       command = command.join ' '
       Runner.run(command, options)
