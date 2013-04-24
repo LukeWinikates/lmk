@@ -44,11 +44,21 @@ module LMK
     end
 
     def run(command, options)
+      return unless validate!
       console("running command `#{command}`")
       result = shell(command)
       result = post_to_web(result)
       result = sms(result)
       console(result.output)
+    end
+
+    def validate! 
+      unless @configuration.sms_service.runnable?
+        console("Configuration invalid. Run `lmk config` for more info")
+        false
+      else
+        true
+      end
     end
   end
 end

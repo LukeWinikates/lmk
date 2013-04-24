@@ -4,7 +4,11 @@ module LMK
   class TwilioSender
     def initialize
       @config = Config.from_file
-      @client = ::Twilio::REST::Client.new(@config.account_sid, @config.auth_token)
+      @client = ::Twilio::REST::Client.new(@config.account_sid, @config.auth_token) if runnable?
+    end
+
+    def runnable?
+      @config.valid?
     end
 
     def send(command)
