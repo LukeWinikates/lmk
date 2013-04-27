@@ -10,7 +10,7 @@ module LMK
 
     desc "config", "read the current twilio config file"
     def config
-      Config.new.raw
+      puts Config.from_file.debug
     end
   end
 end
