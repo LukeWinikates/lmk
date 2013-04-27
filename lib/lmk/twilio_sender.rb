@@ -3,12 +3,16 @@ require 'twilio-ruby'
 module LMK
   class TwilioSender
     def initialize
-      @config = Config.from_file
+      @config = config
       @client = ::Twilio::REST::Client.new(@config.account_sid, @config.auth_token) if runnable?
     end
 
-    def runnable?
-      @config.valid?
+    def self.config
+      Config.from_file
+    end
+
+    def self.runnable?
+      Config.from_file.valid?
     end
 
     def send(command)

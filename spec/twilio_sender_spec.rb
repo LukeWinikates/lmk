@@ -9,4 +9,24 @@ describe LMK::TwilioSender do
       LMK::TwilioSender.send fake_command
     end
   end
+
+  describe ".runnable" do
+    before { LMK::Config.stub(:from_file) { OpenStruct.new(:valid? => valid) } }
+
+    context "when config is invalid" do
+      let(:valid) { false }
+
+      it "is not runnable" do
+        LMK::TwilioSender.runnable?.should be_false
+      end
+    end
+
+    context "when config is valid" do
+      let(:valid) { true }
+
+      it "is runnable" do
+        LMK::TwilioSender.runnable?.should be_true
+      end
+    end
+  end
 end
