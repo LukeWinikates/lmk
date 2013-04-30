@@ -1,32 +1,32 @@
 require 'spec_helper'
+require 'rspec/mocks'
 
-# This integraiton test runs using the configuration in your ~/.lmkrc file
-# you will recieve a text message each time you run this test, so run it sparingly.
 describe LMK::TwilioSender do
-  context "integration", :integration do
-    let(:fake_command) { OpenStruct.new(:ouput => "test message") }
-    it "sends a message using the twilio api" do
-      LMK::TwilioSender.send fake_command
+  let(:fake_command) { OpenStruct.new(:concise_format => "concise version" ) }
+
+  describe "send" do
+    let(:client) { double(:client) }
+    subject { LMK::TwilioSender.new(client) }
+
+    it "sends the concise version" do
+      client.should_receive(:send).with(fake_command.concise_format)
+      subject.send(fake_command)
     end
   end
 
-  describe ".runnable" do
-    before { LMK::Config.stub(:from_file) { OpenStruct.new(:valid? => valid) } }
+  describe "runnable?" do
+    subject { LMK::TwilioSender.new OpenStruct.new(:runnable? => runnable) } 
 
     context "when config is invalid" do
-      let(:valid) { false }
+      let(:runnable) { false }
 
-      it "is not runnable" do
-        LMK::TwilioSender.runnable?.should be_false
-      end
+      it { should_not be_runnable }
     end
 
     context "when config is valid" do
-      let(:valid) { true }
+      let(:runnable) { true }
 
-      it "is runnable" do
-        LMK::TwilioSender.runnable?.should be_true
-      end
+      it { should  be_runnable }
     end
   end
 end

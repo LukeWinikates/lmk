@@ -2,27 +2,19 @@ require 'octokit'
 
 module LMK
   class GistSender
-    def initialize(current_result) 
-      @command = current_result
+    def send(current_result)
+      result = client.create_gist options(current_result)
+      current_result.html_url = result[:html_url]
+      current_result
     end
 
-    def self.send(current_result)
-      new(current_result).send
-    end
-
-    def send
-      result = client.create_gist options
-      @command.html_url = result[:html_url]
-      @command
-    end
-
-    def options
+    def options(current_result)
       { 
-        :description => @command.command, 
+        :description => current_result.command, 
         :public => false, 
         :files => {
           "output.txt" => { 
-            :content => @command.output 
+            :content => current_result.output 
           }
         }
       }

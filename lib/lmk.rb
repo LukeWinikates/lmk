@@ -1,4 +1,5 @@
 require 'lmk/config'
+require 'lmk/twilio_client_wrapper'
 require 'lmk/twilio_sender'
 require 'lmk/shell_command'
 require 'lmk/runner'

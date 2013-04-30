@@ -1,4 +1,5 @@
 require 'popen4'
+require 'irb'
 
 module LMK
   class ShellCommand
@@ -11,6 +12,10 @@ module LMK
         @error = stderr.read 
         @output = stdout.read
       end
+    end
+
+    def get_binding
+      binding
     end
 
     def self.exec(command)
@@ -26,12 +31,6 @@ module LMK
     end
 
     def output
-      output = ""
-      output << "html url: #{html_url}\n" if html_url 
-      output << result
-    end
-
-    def result
       if success?
         @output
       else

@@ -4,8 +4,8 @@ module LMK
       attr_accessor :sms_service, :gist_service, :console_service, :shell_service
 
       def initialize
-        @sms_service = LMK::TwilioSender
-        @gist_service = LMK::GistSender
+        @sms_service = LMK::TwilioSender.new
+        @gist_service = LMK::GistSender.new
         @console_service = Kernel
         @shell_service = LMK::ShellCommand
       end

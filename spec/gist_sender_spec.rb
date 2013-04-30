@@ -8,11 +8,16 @@ describe LMK::GistSender do
 
   let(:fake_result) { {:html_url => "http://example.com/gists/something"} }
   let(:input) { OpenStruct.new(:command => "command string", :result => "result_string" )  }
-  let(:sender) { LMK::GistSender.new(input) }
+  let(:sender) { LMK::GistSender.new }
+  subject { sender.send(input) }
 
   describe "#send" do
-    it "returns a result decorated with a full_result_url" do
-      sender.send.html_url.should == fake_result[:html_url]
-    end
+    # it "calls the Octokit API with the right arguments" do
+    #  Octokit::Client.any_instance.should_receive(:create_gist) do |arg| 
+    #    arg[:public].should be_false
+    #  end
+    #  subject
+    #end
+    its(:html_url) { should == fake_result[:html_url] }
   end
 end
