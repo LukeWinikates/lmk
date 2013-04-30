@@ -12,5 +12,17 @@ module LMK
     def config
       Kernel.puts Config.from_file.debug
     end
+
+    desc "debug", "view template output for the given command"
+    def debug(*command)
+      command = command.join ' '
+      cmd = ShellCommand.new(command).tap do |c|
+        c.html_url = "http://gist.example.com"
+      end
+      puts "concise"
+      puts cmd.concise_output
+      puts "full"
+      puts cmd.full_output
+    end
   end
 end
