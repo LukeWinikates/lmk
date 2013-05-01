@@ -2,22 +2,25 @@ require 'spec_helper'
 require 'rspec/mocks'
 
 describe LMK::GistSender do
-  before do
-    Octokit::Client.any_instance.stub(:create_gist) { fake_result }
-  end
-
-  let(:fake_result) { {:html_url => "http://example.com/gists/something"} }
-  let(:input) { OpenStruct.new(:command => "command string", :result => "result_string" )  }
+  let(:fake_result) { { :html_url => "http://example.com/gists/something" } }
+  let(:command) { OpenStruct.new(:command => "command string", 
+                                 :timestamp => Time.now.utc,
+                                 :full_output => "fizzbuzz"  )  }
   let(:sender) { LMK::GistSender.new }
-  subject { sender.send(input) }
+
+  subject { sender.send(command) }
 
   describe "#send" do
-    # it "calls the Octokit API with the right arguments" do
-    #  Octokit::Client.any_instance.should_receive(:create_gist) do |arg| 
-    #    arg[:public].should be_false
-    #  end
-    #  subject
-    #end
+    before do
+      Octokit::Client.any_instance.should_receive(:create_gist) do |arg| 
+        arg[:public].should be_false
+        arg[:files].should have_key("#{command.timestamp}.lmk")
+        arg[:files].first[1][:content].should == command.full_output
+        arg[:description].should == command.command
+        fake_result
+      end
+    end
+
     its(:html_url) { should == fake_result[:html_url] }
   end
 end

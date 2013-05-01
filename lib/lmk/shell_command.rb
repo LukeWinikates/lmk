@@ -3,10 +3,11 @@ require 'erb'
 
 module LMK
   class ShellCommand
-    attr_reader :command
+    attr_reader :command, :timestamp
     attr_accessor :html_url
 
     def initialize(command)
+      @timestamp = Time.now.utc
       @command = command
       @status = ::POpen4.popen4(command) do |stdout, stderr, stdin, pid| 
         @error = stderr.read 

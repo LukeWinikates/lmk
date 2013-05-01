@@ -8,6 +8,7 @@ describe LMK::ShellCommand do
     its(:output)  { should == "hamburglar\n" }
     its(:status)  { should == 0 }
     its(:command) { should == command }
+    its(:timestamp) { should_not be_nil }
   end
 
   context "for shell commands that fail" do
@@ -16,5 +17,6 @@ describe LMK::ShellCommand do
     its(:output)  { should =~ /No such file or directory/ }
     its(:status)  { should == 1 }
     its(:command) { should == command }
+    its(:timestamp) { should_not be_nil }
   end
 end

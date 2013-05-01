@@ -9,7 +9,7 @@ module LMK
     end
 
     def send(command)
-      @client.send command.concise_format
+      @client.send command.concise_output
       command
     end
   end
