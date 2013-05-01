@@ -7,7 +7,7 @@ module LMK
     attr_accessor :html_url
 
     def initialize(command)
-      @timestamp = Time.now.utc
+      @timestamp = Time.now
       @command = command
       @status = ::POpen4.popen4(command) do |stdout, stderr, stdin, pid| 
         @error = stderr.read 

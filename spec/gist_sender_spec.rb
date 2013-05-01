@@ -14,7 +14,7 @@ describe LMK::GistSender do
     before do
       Octokit::Client.any_instance.should_receive(:create_gist) do |arg| 
         arg[:public].should be_false
-        arg[:files].should have_key("#{command.timestamp}.lmk")
+        arg[:files].should have_key("#{command.timestamp.strftime '%FT%R'}.lmk")
         arg[:files].first[1][:content].should == command.full_output
         arg[:description].should == command.command
         fake_result

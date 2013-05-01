@@ -13,7 +13,7 @@ module LMK
         :description => command.command, 
         :public => false, 
         :files => {
-          "#{command.timestamp}.lmk" => { 
+          "#{command.timestamp.strftime '%FT%R'}.lmk" => { 
             :content => command.full_output 
           }
         }
