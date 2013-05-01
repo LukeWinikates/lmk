@@ -1,3 +1,5 @@
+[![Code Climate](https://codeclimate.com/github/LukeWinikates/lmk.png)](https://codeclimate.com/github/LukeWinikates/lmk)
+
 LMK
 ===========
 
