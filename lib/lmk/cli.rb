@@ -13,7 +13,7 @@ module LMK
       Kernel.puts Config.from_file.debug
     end
 
-    desc "debug", "view template output for the given command"
+    desc "debug COMMAND", "view template output for the given command"
     def debug(*command)
       command = command.join ' '
       cmd = ShellCommand.new(command).tap do |c|
