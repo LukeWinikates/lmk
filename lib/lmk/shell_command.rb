@@ -65,7 +65,7 @@ full output:
 
     def concise_template
       ERB.new %q{
-LMK Command Result:
+%%% LMK Command Result: %%%
 > <%= command %>
 <% if success? %>succeeded 
 <% else %> failed (<%=status%>)<% end %>

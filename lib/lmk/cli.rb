@@ -21,7 +21,7 @@ module LMK
       end
       puts "concise"
       puts cmd.concise_output
-      puts "full"
+      puts "\n\nfull"
       puts cmd.full_output
     end
   end
