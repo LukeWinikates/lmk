@@ -1,5 +1,6 @@
 require 'rspec'
 require 'rspec/mocks'
+require 'openstruct'
 require 'lmk'
 
 RSpec.configure do |c|
