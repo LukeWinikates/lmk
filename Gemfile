@@ -6,5 +6,6 @@ gem 'popen4'
 gem 'octokit'
 
 group :development do
+  gem 'rake'
   gem 'rspec'
 end
