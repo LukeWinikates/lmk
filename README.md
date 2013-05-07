@@ -5,9 +5,6 @@ LMK
 
 Don't sit around waiting for rake/make/tests/etc to finish. Let the machine tell you when it's done.
 
-## PREREQUISITES:
-You need a twilio account, including API Key and Account SID for sending [SMSes](http://www.twilio.com/sms).
-
 ## USAGE:
 `$ lmk exec [command]`
 
@@ -15,6 +12,10 @@ executes [command], sending a digest of the result as an SMS to the specified ph
 
 For example:
 `$ lmk exec bundle install`
+
+
+## PREREQUISITES:
+You need a twilio account, including API Key and Account SID for sending [SMSes](http://www.twilio.com/sms).
 
 ## INSTALLATION/CONFIGURATION:
 LMK requires a ~/.lmkrc file in order to run. The .lmkrc is a simple YAML file with four required values: 
