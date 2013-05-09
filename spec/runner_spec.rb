@@ -60,7 +60,6 @@ describe LMK::Runner do
       shell_service.should_receive(:exec).with(command_text).ordered
       gist_service.should_receive(:send).with(fake_command).ordered.and_return(fake_command)
       sms_service.should_receive(:send).with(fake_command).ordered.and_return(fake_command)
-      console_service.should_receive(:puts).with(fake_command.output).ordered
       subject
     end
 

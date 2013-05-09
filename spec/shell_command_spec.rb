@@ -1,11 +1,17 @@
 require 'spec_helper'
 
 describe LMK::ShellCommand do
-  subject { LMK::ShellCommand.new(command) }
-  context "for succesful shell commands" do
-    let(:command) { 'echo "hamburglar"' }
+  let(:fake_kernel) do
+    double(:kernel)
+  end
 
-    its(:output)  { should == "hamburglar\n" }
+  before { fake_kernel.stub(:puts) { |string| } }
+
+  subject { LMK::ShellCommand.new(command, fake_kernel) }
+  context "for succesful shell commands" do
+    let(:command) { 'echo "\nhamburglar\n"' }
+
+    its(:output)  { should == "\nhamburglar\n\n" }
     its(:status)  { should == 0 }
     its(:command) { should == command }
     its(:timestamp) { should_not be_nil }

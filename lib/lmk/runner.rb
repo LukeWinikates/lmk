@@ -49,7 +49,6 @@ module LMK
       result = shell(command)
       result = post_to_web(result)
       result = sms(result)
-      console(result.output)
     end
 
     def validate! 

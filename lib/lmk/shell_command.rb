@@ -6,13 +6,24 @@ module LMK
     attr_reader :command, :timestamp
     attr_accessor :html_url
 
-    def initialize(command)
+    def initialize(command, kernel = Kernel)
+      @kernel = kernel
       @timestamp = Time.now
       @command = command
       @status = ::POpen4.popen4(command) do |stdout, stderr, stdin, pid| 
-        @error = stderr.read 
-        @output = stdout.read
+        @error = read_while_streaming(stderr)
+        @output = read_while_streaming(stdout)
       end
+    end
+
+    def read_while_streaming(io)
+      full = ""
+      until io.eof? do
+        line = io.readline
+        @kernel.puts(line)
+        full << line
+      end
+      full
     end
 
     def get_binding
