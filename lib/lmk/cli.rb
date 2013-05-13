@@ -18,7 +18,7 @@ module LMK
       self.class.runner.run(command)
     end
 
-    desc "config", "read the current twilio config file"
+    desc "config", "read and validate the current twilio config file"
     def config
       Kernel.puts Config.from_file.debug
     end
@@ -35,7 +35,7 @@ module LMK
       puts cmd.full_output
     end
 
-    desc "send", "publish a gist and send an SMS notification by reading from STDIN"
+    desc "send_from_pipe", "begin reading from STDIN and send an SMS once the pipe closes"
     def send_from_pipe
       self.class.runner.send_from_pipe
     end
