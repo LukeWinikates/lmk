@@ -1,49 +1,40 @@
 module LMK
   class Runner
     class Configuration
-      attr_accessor :sms_service, :gist_service, :console_service, :shell_service
+      attr_accessor :sms_service, :gist_service, :stdout, :shell_service, :stdin
 
-      def initialize
-        @sms_service = LMK::TwilioSender.new
-        @gist_service = LMK::GistSender.new
-        @console_service = Kernel
-        @shell_service = LMK::ShellCommand
+      def initialize(options = defaults)
+        @sms_service = options[:sms]
+        @gist_service = options[:gist]
+        @stdout = options[:stdout]
+        @stdin = options[:stdin]
+        @shell_service = options[:shell]
+      end
+
+      def defaults 
+        {
+          :stdin => STDIN,
+          :stdout => STDOUT,
+          :shell => LMK::ShellCommand,
+          :gist => LMK::GistSender.new,
+          :sms => LMK::TwilioSender.new
+        }
       end
     end
 
-    def self.configure
-      yield self.configuration
-    end
-
-    def self.configuration
-      @@default_configuration ||= Configuration.new
-    end
-
-    def self.run(command, options)
-      new.run(command, options)
-    end
-
-    def initialize(configuration = Runner.configuration)
+    def initialize(configuration = Configuration.new)
       @configuration = configuration
     end
 
-    def console(message)
-      @configuration.console_service.puts(message)
+    def send_from_pipe
+      from_pipe = @configuration.stdin.read
+      console from_pipe
+      result = SimpleCommand.new from_pipe
+      result = post_to_web(result)
+      result = sms(result)
     end
 
-    def shell(command)
-      @configuration.shell_service.exec(command)
-    end
-
-    def sms(command)
-      @configuration.sms_service.send(command)
-    end
-
-    def post_to_web(command)
-      @configuration.gist_service.send(command)
-    end
-
-    def run(command, options)
+    def run(command)
       return unless validate!
       console("running command `#{command}`")
       result = shell(command)
@@ -58,6 +49,23 @@ module LMK
       else
         true
       end
+    end
+
+    private
+    def console(message)
+      @configuration.stdout.puts(message)
+    end
+
+    def shell(command)
+      @configuration.shell_service.exec(command)
+    end
+
+    def sms(command)
+      @configuration.sms_service.send(command)
+    end
+
+    def post_to_web(command)
+      @configuration.gist_service.send(command)
     end
   end
 end

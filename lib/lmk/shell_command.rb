@@ -2,8 +2,7 @@ require 'popen4'
 require 'erb'
 
 module LMK
-  class ShellCommand
-    attr_reader :command, :timestamp
+  class ShellCommand < CommandBase
     attr_accessor :html_url
 
     def initialize(command, kernel = Kernel)
@@ -26,10 +25,6 @@ module LMK
       full
     end
 
-    def get_binding
-      binding
-    end
-
     def self.exec(command)
       new(command)
     end
@@ -43,39 +38,13 @@ module LMK
     end
 
     def output
-      if success?
-        @output
-      else
-        @error
-      end
+      success? ? @output : @error
     end
 
-    def concise_output
-      concise_template.result get_binding
-    end
-
-    def full_output
-      full_template.result get_binding
-    end 
-
-    def full_template
+    def status_header 
       ERB.new %q{
-%%% LMK Command Result: %%%
-> <%= command %>
 <% if success? %>succeeded 
-<% else %> failed (<%=status%>)<% end %>
-full output:
-----------------------------
-<%=output%>
-      }
-    end
-
-    def concise_template
-      ERB.new %q{LMK Command Result:
-> <%=command%>
-<% if success? %>succeeded 
-<% else %>failed (<%=status%>)<% end %>
-<% if html_url %>full result @ <%= html_url %><% end %>}
+<% else %>failed (<%=status%>)<% end %>}
     end
   end
 end
